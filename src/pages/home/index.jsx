@@ -1,5 +1,4 @@
 import { Container, Grid, Typography } from "@mui/material";
-import React from "react";
 import DiscussionCard from "./components/DiscussionCard";
 
 const Home = () => {
@@ -9,8 +8,8 @@ const Home = () => {
         <Grid item xs={12}>
           <Typography variant="h4">All Discussions</Typography>
         </Grid>
-        {[1, 2, 3, 4].map(() => (
-          <Grid item xs={12}>
+        {[1, 2, 3, 4].map((i) => (
+          <Grid item xs={12} key={i}>
             <DiscussionCard />
           </Grid>
         ))}

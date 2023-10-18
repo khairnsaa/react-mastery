@@ -1,9 +1,18 @@
 import { Box, Button } from "@mui/material";
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { logout } from "../slices/authSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
+  const onLogout = () => {
+    console.log("logging out");
+    dispatch(logout());
+    navigate("/login");
+  };
   return (
     <Box
       sx={{
@@ -21,12 +30,20 @@ const Navbar = () => {
         <Link to={"/"} style={{ padding: "8px 16px" }}>
           LeaderBoard
         </Link>
-        <Link to={"/login"} style={{ padding: "8px 16px" }}>
-          <Button variant="outlined">Login</Button>
-        </Link>
-        <Link to={"/register"}>
-          <Button variant="contained">Register</Button>
-        </Link>
+        {userInfo ? (
+          <Button variant="contained" color="error" onClick={onLogout}>
+            Logout
+          </Button>
+        ) : (
+          <>
+            <Link to={"/login"} style={{ padding: "8px 16px" }}>
+              <Button variant="outlined">Login</Button>
+            </Link>
+            <Link to={"/register"}>
+              <Button variant="contained">Register</Button>
+            </Link>
+          </>
+        )}
       </Box>
     </Box>
   );

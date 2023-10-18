@@ -1,10 +1,9 @@
-import React from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Home from "./pages/home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Thread from "./pages/thread";
+import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Thread from "./pages/thread";
 
 const Router = () => {
   return (

@@ -1,20 +1,16 @@
-import { Box, Button, Chip, Container, Grid, Typography } from "@mui/material";
-import React from "react";
 import { TextareaAutosize } from "@mui/base";
+import { Button, Chip, Container, Grid, Typography } from "@mui/material";
 const Thread = () => {
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h5">
-            A Very Long Title Discussions Name GOes Here
-          </Typography>
+          <Typography variant="h5">A Very Long Title Discussions Name GOes Here</Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-            quia aperiam corporis, consequuntur neque amet harum unde
-            repellendus consectetur saepe.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates quia aperiam
+            corporis, consequuntur neque amet harum unde repellendus consectetur saepe.
           </Typography>
         </Grid>
         <Grid item xs={12}>
