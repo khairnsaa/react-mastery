@@ -31,9 +31,14 @@ const Navbar = () => {
           LeaderBoard
         </Link>
         {userInfo ? (
-          <Button variant="contained" color="error" onClick={onLogout}>
-            Logout
-          </Button>
+          <>
+            <Link to={"/new-thread"} style={{ padding: "8px 16px" }}>
+              <Button variant="outlined">Ask Question</Button>
+            </Link>
+            <Button variant="contained" color="error" onClick={onLogout}>
+              Logout
+            </Button>
+          </>
         ) : (
           <>
             <Link to={"/login"} style={{ padding: "8px 16px" }}>
