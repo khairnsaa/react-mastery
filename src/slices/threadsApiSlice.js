@@ -6,6 +6,9 @@ export const threadsApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `/threads`,
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: data,
       }),
     }),
@@ -15,7 +18,7 @@ export const threadsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    getDetailThreads: builder.query({
+    getDetailThread: builder.query({
       query: (id) => ({
         url: `/threads/${id}`,
         method: "GET",
@@ -24,5 +27,5 @@ export const threadsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useCreateThreadMutation, useGetAllThreadsQuery, useGetDetailThreadsQuery } =
+export const { useCreateThreadMutation, useGetAllThreadsQuery, useGetDetailThreadQuery } =
   threadsApiSlice;

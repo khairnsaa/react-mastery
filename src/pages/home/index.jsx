@@ -1,10 +1,9 @@
 import { CircularProgress, Container, Grid, Typography } from "@mui/material";
+import ItemCard from "../../components/ItemCard";
 import { useGetAllThreadsQuery } from "../../slices/threadsApiSlice";
-import DiscussionCard from "./components/DiscussionCard";
 
 const Home = () => {
   const { data, isFetching } = useGetAllThreadsQuery();
-  console.log(data);
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
       <Grid container spacing={2}>
@@ -18,7 +17,7 @@ const Home = () => {
         ) : (
           data.data.threads.map((item) => (
             <Grid item xs={12} key={item.id}>
-              <DiscussionCard item={item} />
+              <ItemCard item={item} />
             </Grid>
           ))
         )}
