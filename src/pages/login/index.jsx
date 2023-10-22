@@ -2,6 +2,7 @@ import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import GlobalAlert from "../../components/GlobalAlert";
 import { setAlert } from "../../slices/alertSlice";
 import { setCredentials } from "../../slices/authSlice";
 import { useLoginMutation } from "../../slices/userApiSlice";
@@ -41,6 +42,9 @@ const Login = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h4">Login</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <GlobalAlert />
         </Grid>
         <Grid item xs={12}>
           <TextField

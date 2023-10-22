@@ -12,16 +12,36 @@ import {
 import parse from "html-react-parser";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ItemCard from "../../components/ItemCard";
+import { setAlert } from "../../slices/alertSlice";
+import { useCreateCommentMutation } from "../../slices/commentsApiSlice";
 import { useGetDetailThreadQuery } from "../../slices/threadsApiSlice";
 import { useGetAllUsersQuery } from "../../slices/userApiSlice";
 const Thread = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [owner, setOwner] = useState(null);
+  const [commentPayload, setCommentPayload] = useState(null);
 
+  const [createComment] = useCreateCommentMutation();
   const { data, isFetching } = useGetDetailThreadQuery(id);
   const { data: user, isFetching: isFetchingUser } = useGetAllUsersQuery();
+
+  const onCreateComment = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await createComment(id, { content: commentPayload }).unwrap();
+      console.log(res);
+
+      if (res.status === "success") {
+        dispatch(setAlert({ type: "success", detail: "Success Create Comment" }));
+      }
+    } catch (error) {
+      dispatch(setAlert({ type: "error", detail: error?.data?.message }));
+    }
+  };
 
   useEffect(() => {
     const getOwner = async () => {
@@ -58,8 +78,12 @@ const Thread = () => {
                 padding: "16px",
                 borderRadius: "8px",
               }}
+              value={commentPayload}
+              onChange={(e) => setCommentPayload(e.target.value)}
             />
-            <Button variant="contained">Post</Button>
+            <Button variant="contained" onClick={onCreateComment}>
+              Post
+            </Button>
           </Grid>
           <Grid item xs={4} px={3}>
             {isFetchingUser ? (
@@ -88,7 +112,6 @@ const Thread = () => {
               </Box>
             )}
           </Grid>
-          {console.log(data.data.detailThread.comments)}
           {data.data.detailThread.comments.length > 0 &&
             data.data.detailThread.comments.map((comment) => (
               <Grid item xs={12} key={comment.id}>
