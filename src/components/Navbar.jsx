@@ -9,7 +9,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const onLogout = () => {
-    console.log("logging out");
     dispatch(logout());
     navigate("/login");
   };
@@ -27,7 +26,7 @@ const Navbar = () => {
         <Link to={"/"} style={{ padding: "8px 16px" }}>
           Threads
         </Link>
-        <Link to={"/"} style={{ padding: "8px 16px" }}>
+        <Link to={"/leaderboard"} style={{ padding: "8px 16px" }}>
           LeaderBoard
         </Link>
         {userInfo ? (

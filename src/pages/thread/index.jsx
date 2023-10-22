@@ -16,27 +16,68 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ItemCard from "../../components/ItemCard";
 import { setAlert } from "../../slices/alertSlice";
-import { useCreateCommentMutation } from "../../slices/commentsApiSlice";
+import {
+  useCreateCommentMutation,
+  useDownVoteCommentMutation,
+  useUpVoteCommentMutation,
+} from "../../slices/commentsApiSlice";
 import { useGetDetailThreadQuery } from "../../slices/threadsApiSlice";
 import { useGetAllUsersQuery } from "../../slices/userApiSlice";
+import { useNavigate } from "react-router-dom";
+import GlobalAlert from "../../components/GlobalAlert";
 const Thread = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const [owner, setOwner] = useState(null);
   const [commentPayload, setCommentPayload] = useState(null);
 
   const [createComment] = useCreateCommentMutation();
-  const { data, isFetching } = useGetDetailThreadQuery(id);
+  const [upVoteComment] = useUpVoteCommentMutation();
+  const [downVoteComment] = useDownVoteCommentMutation();
+  const { data, isFetching, refetch } = useGetDetailThreadQuery(id);
   const { data: user, isFetching: isFetchingUser } = useGetAllUsersQuery();
-
+  console.log(data);
   const onCreateComment = async (e) => {
     e.preventDefault();
     try {
-      const res = await createComment(id, { content: commentPayload }).unwrap();
-      console.log(res);
+      const res = await createComment({
+        threadId: id,
+        body: { content: commentPayload },
+      }).unwrap();
 
       if (res.status === "success") {
-        dispatch(setAlert({ type: "success", detail: "Success Create Comment" }));
+        refetch();
+        setCommentPayload("");
+        dispatch(
+          setAlert({ type: "success", detail: "Success Create Comment" })
+        );
+      }
+    } catch (error) {
+      dispatch(setAlert({ type: "error", detail: error?.data?.message }));
+    }
+  };
+
+  const onUpVoteComment = async (commentId) => {
+    try {
+      const res = await upVoteComment({ id, commentId }).unwrap();
+
+      if (res.status === "success") {
+        refetch();
+        dispatch(setAlert({ type: null, detail: "" }));
+      }
+    } catch (error) {
+      dispatch(setAlert({ type: "error", detail: error?.data?.message }));
+    }
+  };
+
+  const onDownVoteComment = async (commentId) => {
+    try {
+      const res = await downVoteComment({ id, commentId }).unwrap();
+
+      if (res.status === "success") {
+        refetch();
+        dispatch(setAlert({ type: null, detail: "" }));
       }
     } catch (error) {
       dispatch(setAlert({ type: "error", detail: error?.data?.message }));
@@ -46,11 +87,18 @@ const Thread = () => {
   useEffect(() => {
     const getOwner = async () => {
       if (!isFetchingUser) {
-        setOwner(user.data.users.find(({ id }) => id === data.data.detailThread.owner.id));
+        setOwner(
+          user.data.users.find(
+            ({ id }) => id === data.data.detailThread.owner.id
+          )
+        );
       }
     };
     getOwner();
   }, [user, isFetchingUser, data]);
+  useEffect(() => {
+    if (!isFetching && data === undefined) navigate("/404");
+  }, [data, isFetching, navigate]);
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
       {isFetching ? (
@@ -81,9 +129,14 @@ const Thread = () => {
               value={commentPayload}
               onChange={(e) => setCommentPayload(e.target.value)}
             />
-            <Button variant="contained" onClick={onCreateComment}>
+            <Button
+              variant="contained"
+              sx={{ my: 1 }}
+              onClick={onCreateComment}
+            >
               Post
             </Button>
+            <GlobalAlert />
           </Grid>
           <Grid item xs={4} px={3}>
             {isFetchingUser ? (
@@ -106,7 +159,10 @@ const Thread = () => {
                 <Stack>
                   <Typography>{owner?.name}</Typography>
                   <Typography variant="body2" color={"grey"}>
-                    Created at {moment(data.data.detailThread.createdAt).format("DD/MM/YYYY HH:mm")}
+                    Created at{" "}
+                    {moment(data.data.detailThread.createdAt).format(
+                      "DD/MM/YYYY HH:mm"
+                    )}
                   </Typography>
                 </Stack>
               </Box>
@@ -115,7 +171,12 @@ const Thread = () => {
           {data.data.detailThread.comments.length > 0 &&
             data.data.detailThread.comments.map((comment) => (
               <Grid item xs={12} key={comment.id}>
-                <ItemCard item={comment} type="comment" />
+                <ItemCard
+                  item={comment}
+                  type="comment"
+                  onUpvote={onUpVoteComment}
+                  onDownVote={onDownVoteComment}
+                />
               </Grid>
             ))}
         </Grid>

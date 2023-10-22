@@ -32,6 +32,7 @@ const Login = () => {
         console.log(res.data.token);
         dispatch(setCredentials(res.data.token));
         navigate("/");
+        dispatch(setAlert({ type: null, detail: "" }));
       }
     } catch (error) {
       dispatch(setAlert({ type: "error", detail: error?.data?.message }));
@@ -66,7 +67,12 @@ const Login = () => {
           />
         </Grid>
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <Button variant="contained" sx={{ p: "8px 28px" }} type="submit" onClick={onLogin}>
+          <Button
+            variant="contained"
+            sx={{ p: "8px 28px" }}
+            type="submit"
+            onClick={onLogin}
+          >
             Login
           </Button>
         </Grid>

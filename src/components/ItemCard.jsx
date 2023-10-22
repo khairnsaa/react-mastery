@@ -1,12 +1,22 @@
-import { Box, Chip, Grid, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Grid,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import parse from "html-react-parser";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetAllUsersQuery } from "../slices/userApiSlice";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
-const ItemCard = ({ item, type = "thread" }) => {
+const ItemCard = ({ item, type = "thread", onUpvote, onDownVote }) => {
   const [owner, setOwner] = useState(null);
   const { data, isFetching } = useGetAllUsersQuery();
 
@@ -15,7 +25,9 @@ const ItemCard = ({ item, type = "thread" }) => {
     const now = new Date();
     const secondsAgo = Math.floor((now - date) / 1000);
 
-    if (secondsAgo < 60) {
+    if (secondsAgo < 0) {
+      return `Just Now`;
+    } else if (secondsAgo < 60) {
       return `${secondsAgo} ${secondsAgo === 1 ? "second" : "seconds"} ago`;
     } else if (secondsAgo < 3600) {
       const minutesAgo = Math.floor(secondsAgo / 60);
@@ -42,11 +54,40 @@ const ItemCard = ({ item, type = "thread" }) => {
     getOwner();
   }, [item, data, isFetching, type]);
   return (
-    <Grid container sx={{ p: 2, borderRadius: 2, border: "1px solid lightblue" }}>
-      <Grid item xs={2}>
-        <Typography mb={1}>{item.upVotesBy.length} Upvotes</Typography>
-        <Typography mb={1}>{item.downVotesBy.length} Down Votes</Typography>
-        {type === "thread" && <Typography>{item.totalComments} Answer</Typography>}
+    <Grid
+      container
+      sx={{ p: 2, borderRadius: 2, border: "1px solid lightblue" }}
+    >
+      <Grid item xs={1} mr={2}>
+        <Stack>
+          <Button
+            sx={{ whiteSpace: "nowrap", fontSize: "12px", borderRadius: 4 }}
+            variant="outlined"
+            onClick={() => onUpvote(item.id)}
+            startIcon={<ThumbUpAltIcon />}
+          >
+            {item.upVotesBy.length}
+          </Button>
+          <Button
+            sx={{
+              whiteSpace: "nowrap",
+              fontSize: "12px",
+              borderRadius: 4,
+              my: 1,
+            }}
+            variant="outlined"
+            onClick={() => onDownVote(item.id)}
+            color="error"
+            startIcon={<ThumbDownAltIcon />}
+          >
+            {item.downVotesBy.length}
+          </Button>
+        </Stack>
+        {type === "thread" && (
+          <Typography fontSize={"14px"} whiteSpace={"nowrap"}>
+            {item.totalComments} Answer
+          </Typography>
+        )}
       </Grid>
       <Grid item xs={10}>
         {type === "thread" && (
@@ -54,7 +95,21 @@ const ItemCard = ({ item, type = "thread" }) => {
             <Typography mb={1}>{item.title}</Typography>
           </Link>
         )}
-        <Typography mb={1}>{parse(item?.body || item.content)}</Typography>
+        <Typography
+          sx={
+            type === "thread"
+              ? {
+                  textOverflow: "ellipsis",
+                  height: "2rem",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }
+              : { height: "auto" }
+          }
+          mb={1}
+        >
+          {parse(item?.body || item.content)}
+        </Typography>
         <Box
           sx={{
             display: "flex",
@@ -69,7 +124,9 @@ const ItemCard = ({ item, type = "thread" }) => {
           )}
           <Typography variant="body2" color={"grey"}>
             {owner?.name} {type === "thread" ? "Asked " : "Answered "}
-            <Tooltip title={`${moment(item.createdAt).format("DD/MM/YYYY HH:mm")}`}>
+            <Tooltip
+              title={`${moment(item.createdAt).format("DD/MM/YYYY HH:mm")}`}
+            >
               {timeAgo(item.createdAt)}
             </Tooltip>
           </Typography>
@@ -84,4 +141,6 @@ export default ItemCard;
 ItemCard.propTypes = {
   item: PropTypes.object,
   type: PropTypes.string,
+  onUpvote: PropTypes.func,
+  onDownVote: PropTypes.func,
 };
