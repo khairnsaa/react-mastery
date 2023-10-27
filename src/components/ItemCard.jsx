@@ -1,20 +1,12 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Grid,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import { Box, Button, Chip, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import parse from "html-react-parser";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetAllUsersQuery } from "../slices/userApiSlice";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
 const ItemCard = ({ item, type = "thread", onUpvote, onDownVote }) => {
   const [owner, setOwner] = useState(null);
@@ -54,10 +46,7 @@ const ItemCard = ({ item, type = "thread", onUpvote, onDownVote }) => {
     getOwner();
   }, [item, data, isFetching, type]);
   return (
-    <Grid
-      container
-      sx={{ p: 2, borderRadius: 2, border: "1px solid lightblue" }}
-    >
+    <Grid container sx={{ p: 2, borderRadius: 2, border: "1px solid lightblue" }}>
       <Grid item xs={1} mr={2}>
         <Stack>
           <Button
@@ -66,7 +55,7 @@ const ItemCard = ({ item, type = "thread", onUpvote, onDownVote }) => {
             onClick={() => onUpvote(item.id)}
             startIcon={<ThumbUpAltIcon />}
           >
-            {item.upVotesBy.length}
+            {item.upVotesBy?.length || 0}
           </Button>
           <Button
             sx={{
@@ -80,7 +69,7 @@ const ItemCard = ({ item, type = "thread", onUpvote, onDownVote }) => {
             color="error"
             startIcon={<ThumbDownAltIcon />}
           >
-            {item.downVotesBy.length}
+            {item.downVotesBy?.length || 0}
           </Button>
         </Stack>
         {type === "thread" && (
@@ -124,9 +113,7 @@ const ItemCard = ({ item, type = "thread", onUpvote, onDownVote }) => {
           )}
           <Typography variant="body2" color={"grey"}>
             {owner?.name} {type === "thread" ? "Asked " : "Answered "}
-            <Tooltip
-              title={`${moment(item.createdAt).format("DD/MM/YYYY HH:mm")}`}
-            >
+            <Tooltip title={`${moment(item.createdAt).format("DD/MM/YYYY HH:mm")}`}>
               {timeAgo(item.createdAt)}
             </Tooltip>
           </Typography>

@@ -23,7 +23,7 @@ const Navbar = () => {
     >
       <img src={logo} width={"200px"} alt="logo heap overflow" />
       <Box>
-        <Link to={"/"} style={{ padding: "8px 16px" }}>
+        <Link to={"/"} role="a" style={{ padding: "8px 16px" }}>
           Threads
         </Link>
         <Link to={"/leaderboard"} style={{ padding: "8px 16px" }}>
