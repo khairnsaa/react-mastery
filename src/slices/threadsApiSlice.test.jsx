@@ -36,22 +36,4 @@ describe("Integration Test user api slice", () => {
     // Assert the result
     expect(getAllThreadsResponse).toEqual(mockData.threads);
   });
-  // it("should fetch one thread", async () => {
-  //   const threadId = "thread-1"; // Replace with a valid thread id
-  //   const { result, waitFor } = renderHook(() => useGetDetailThreadQuery(threadId), {
-  //     wrapper: Wrapper,
-  //   });
-  //   await act(async () => {
-  //     await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for the next tick
-  //   });
-  //   await waitFor(() => {
-  //     return result.current.isSuccess;
-  //   });
-
-  //   // Access the hook's result
-  //   const getThreadResponse = result.current.data;
-
-  //   // Assert the result
-  //   expect(getThreadResponse).toEqual(mockData.oneThread);
-  // });
 });

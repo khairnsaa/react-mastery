@@ -50,25 +50,4 @@ describe("Integration Test user api slice", () => {
     // Assert the result
     expect(getAllUsersResponse).toEqual(mockData.users);
   });
-  // it("should return token when user logged in", async () => {
-  //   const { result, waitFor } = renderHook(() => useLoginMutation(), { wrapper: Wrapper });
-
-  //   // Wait for the hook to finish its asynchronous operation
-  //   await act(async () => {
-  //     await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for the next tick
-  //   });
-  //   await waitFor(
-  //     () => {
-  //       return result.current[1].isSuccess;
-  //     },
-  //     { timeout: 10000 }
-  //   );
-  //   // Call the login mutation with a sample payload
-  //   const login = result.current[0];
-  //   const loginResponse = await login({ username: "testuser", password: "testpassword" });
-  //   // Assert the result
-  //   expect(loginResponse.data).toEqual({ token: "mockedToken" });
-  //   expect(loginResponse.error).toBe(null);
-  //   expect(loginResponse.isSuccess).toBe(true);
-  // });
 });
