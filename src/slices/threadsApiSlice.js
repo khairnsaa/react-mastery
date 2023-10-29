@@ -14,7 +14,7 @@ export const threadsApiSlice = apiSlice.injectEndpoints({
     }),
     getAllThreads: builder.query({
       query: () => ({
-        url: `/thread`,
+        url: `/threads`,
         method: "GET",
       }),
     }),
