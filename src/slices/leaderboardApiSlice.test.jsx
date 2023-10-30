@@ -1,3 +1,8 @@
+/**
+ * - leaderbard api test
+ *   - should fetch leaderboads data
+ */
+
 import { act, renderHook } from "@testing-library/react-hooks";
 import "isomorphic-fetch";
 import PropTypes from "prop-types";

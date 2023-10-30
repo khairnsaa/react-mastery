@@ -1,3 +1,9 @@
+/**
+ * - Alert Reducer Test
+ *   - should set an alert
+ *   - should not modify state for unknown action
+ */
+
 import { describe, expect, it } from "vitest";
 import { store } from "../store";
 import alertReducer, { setAlert } from "./alertSlice";

@@ -1,3 +1,10 @@
+/**
+ * - auth reducer test
+ *   - should return initial state if no one authenticated
+ *   - should return user info if someone authenticated
+ *   - should return null if someone logged out
+ */
+
 import { describe, expect, it } from "vitest";
 import { store } from "../store";
 import authReducer, { logout, setCredentials } from "./authSlice";
