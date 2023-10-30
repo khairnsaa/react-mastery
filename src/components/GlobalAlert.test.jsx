@@ -1,3 +1,8 @@
+/**
+ * - Global Alert Test
+ *   - should render akert with provided content
+ */
+
 import { configureStore } from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
