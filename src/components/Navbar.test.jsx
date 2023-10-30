@@ -1,3 +1,10 @@
+/**
+ * - Navbar Component test
+ *   - should render logo
+ *   - should render login and register button when user not authenticated
+ *   - should render "ask question" and logout button when user authenticated
+ */
+
 import { render, screen } from "@testing-library/react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
