@@ -1,18 +1,19 @@
 import { CircularProgress, Container, Grid, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
 import ItemCard from "../../components/ItemCard";
+import { setAlert } from "../../slices/alertSlice";
 import {
   useDownVoteThreadMutation,
   useGetAllThreadsQuery,
   useUpVoteThreadMutation,
 } from "../../slices/threadsApiSlice";
-import { setAlert } from "../../slices/alertSlice";
-import { useDispatch } from "react-redux";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { data, isFetching, refetch } = useGetAllThreadsQuery();
   const [upVoteThread] = useUpVoteThreadMutation();
   const [downVoteThread] = useDownVoteThreadMutation();
+  console.log("testing");
 
   const onUpVoteThread = async (id) => {
     try {
@@ -52,11 +53,7 @@ const Home = () => {
         ) : (
           data.data.threads.map((item) => (
             <Grid item xs={12} key={item.id}>
-              <ItemCard
-                item={item}
-                onUpvote={onUpVoteThread}
-                onDownVote={onDownVoteThread}
-              />
+              <ItemCard item={item} onUpvote={onUpVoteThread} onDownVote={onDownVoteThread} />
             </Grid>
           ))
         )}
